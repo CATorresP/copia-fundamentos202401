@@ -102,9 +102,12 @@ void MainGame::initLevel() {
 	levels.push_back(new Level("Level/level1.txt"));
 	currentLevel = 0;
 	spriteBatch.init();
+	// Player init
 	player = new Player();
-	player->init(0.5f,levels[currentLevel]->getPlayerPosition(), 
+	player->init(1.5f,levels[currentLevel]->getPlayerPosition(), 
 		&inputManager);
+
+	// Humans init
 	std::mt19937 randomEngie(time(nullptr));
 	std::uniform_int_distribution<int>randPosX(
 		1,levels[currentLevel]->getWidth() - 2
@@ -118,6 +121,13 @@ void MainGame::initLevel() {
 		glm::vec2 pos(randPosX(randomEngie) * TILE_WIDTH,
 			randPosY(randomEngie) * TILE_WIDTH);
 		humans.back()->init(1.0f, pos);
+	}
+
+	// Zombies init
+	for (glm::vec2 pos : levels[currentLevel]->getZombiesPosition())
+	{
+		zombies.push_back(new Zombie);
+		zombies.back()->init(1.5f, pos);
 	}
 }
 
@@ -133,11 +143,14 @@ void MainGame::draw() {
 	GLuint imageLocation = program.getUniformLocation("myImage");
 	glUniform1i(imageLocation, 0);
 	spriteBatch.begin();
+	// Draw
 	levels[currentLevel]->draw();
 	player->draw(spriteBatch);
-	for (size_t i = 0; i < humans.size(); i++)
-	{
-		humans[i]->draw(spriteBatch);
+	for (Human* human : humans) {
+		human->draw(spriteBatch);
+	}
+	for (Zombie* zombie : zombies) {
+		zombie->draw(spriteBatch);
 	}
 	spriteBatch.end();
 	spriteBatch.renderBatch();
@@ -169,9 +182,16 @@ void MainGame::update() {
 		processInput();
 		updateElements();
 		player->update(levels[currentLevel]->getLevelData(), humans, zombies);
-		for (size_t i = 0; i < humans.size(); i++)
+		for (Human* human: humans)
 		{
-			humans[i]->update(levels[currentLevel]->getLevelData(), 
+			human->update(
+				levels[currentLevel]->getLevelData(), 
+				humans, zombies);
+		}
+		for (Zombie* zombie : zombies)
+		{
+			zombie->update(
+				levels[currentLevel]->getLevelData(),
 				humans, zombies);
 		}
 	}
@@ -188,8 +208,9 @@ void MainGame::reset() {
 	{
 		delete humans[i];
 	}
-	humans.clear();
 	delete player;
+	humans.clear();
+	zombies.clear();
 	levels.clear();
 	currentLevel = 0;
 }

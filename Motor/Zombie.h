@@ -1,8 +1,13 @@
 #pragma once
 #include "Agent.h"
+#include <random>
+#include <ctime>
+#include<glm/gtx/rotate_vector.hpp>
+
 class Zombie :
     public Agent
 {
+    glm::vec2 direction;
 public:
     Zombie();
     ~Zombie();
