@@ -104,7 +104,7 @@ void MainGame::initLevel() {
 	spriteBatch.init();
 	// Player init
 	player = new Player();
-	player->init(1.5f,levels[currentLevel]->getPlayerPosition(), 
+	player->init(2.0f,levels[currentLevel]->getPlayerPosition(), 
 		&inputManager);
 
 	// Humans init
@@ -120,14 +120,14 @@ void MainGame::initLevel() {
 		humans.push_back(new Human());
 		glm::vec2 pos(randPosX(randomEngie) * TILE_WIDTH,
 			randPosY(randomEngie) * TILE_WIDTH);
-		humans.back()->init(1.0f, pos);
+		humans.back()->init(0.5f, pos);
 	}
 
 	// Zombies init
 	for (glm::vec2 pos : levels[currentLevel]->getZombiesPosition())
 	{
 		zombies.push_back(new Zombie);
-		zombies.back()->init(1.5f, pos);
+		zombies.back()->init(0.2f, pos);
 	}
 }
 

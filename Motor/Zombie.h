@@ -2,8 +2,8 @@
 #include "Agent.h"
 #include <random>
 #include <ctime>
-#include<glm/gtx/rotate_vector.hpp>
-
+#include <glm/gtx/rotate_vector.hpp>
+#include "Human.h"
 class Zombie :
     public Agent
 {
