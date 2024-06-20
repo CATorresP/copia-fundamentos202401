@@ -120,7 +120,7 @@ void MainGame::initLevel() {
 		humans.push_back(new Human());
 		glm::vec2 pos(randPosX(randomEngie) * TILE_WIDTH,
 			randPosY(randomEngie) * TILE_WIDTH);
-		humans.back()->init(0.5f, pos);
+		humans.back()->init(1.0f, pos);
 	}
 
 	// Zombies init
